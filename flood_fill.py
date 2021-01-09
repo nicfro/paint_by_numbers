@@ -3,6 +3,9 @@ class Flood_fill:
         self.lab_pixels = image.lab
         self.w = image.w 
         self.h = image.h
+        
+        self.unplaced_pixels = image.unplaced_pixels
+        self.lab_pixel_map = image.lab_pixel_map
 
         self.FLOOD_FILL_TOLERANCE = image.FLOOD_FILL_TOLERANCE
         self.number_of_colors = image.number_of_colors
@@ -28,21 +31,21 @@ class Flood_fill:
     def color_distance(color1, color2):
         return (abs(color1[0]-color2[0])**2 + abs(color1[1]-color2[1])**2 + abs(color1[2]-color2[2])**2)**.5
 
-    def flood(self, start_pixel, unplaced_pixels):
+    def flood(self, start_pixel):
         queue = set({start_pixel})
         visited = set()
         cell = set()
 
-        start_color = self.lab_pixels[start_pixel[0]][start_pixel[1]]
+        start_color = self.lab_pixel_map[start_pixel]
 
         while queue:
             pixel = queue.pop()
-            if self.color_distance(start_color, self.lab_pixels[pixel[0]][pixel[1]]) < self.FLOOD_FILL_TOLERANCE:
+            if self.color_distance(start_color, self.lab_pixel_map[pixel]) < self.FLOOD_FILL_TOLERANCE:
                 cell.add(pixel)
-                unplaced_pixels.remove(pixel)
+                self.unplaced_pixels.remove(pixel)
 
                 for i in self.get_neighbours(pixel):
-                    if (i in unplaced_pixels) and (i not in cell) and (i not in visited):
+                    if (i in self.unplaced_pixels) and (i not in cell) and (i not in visited):
                         queue.add(i)
                         
             visited.add(pixel)

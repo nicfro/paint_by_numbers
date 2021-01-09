@@ -6,12 +6,16 @@ from time import time
 from skimage import io
 from image import Image
 from flood_fill import Flood_fill
+from merger import mean_cell_color
 import copy
+bear = "images/bear.jpg"
+fish = "images/fish.jp"
+flood = "images/flood.png"
+img = Image(bear, 20, 100, 10)
 
-img = Image("flood.png", 20, 100, 10)
-
-image = img.lab
 '''
+image = img.lab
+
 flattened_image_array = image.reshape((-1,img.d))
 
 t0 = time()
@@ -37,6 +41,7 @@ while img.unplaced_pixels:
     
     counter += 1
 
+mean_cell_color = mean_cell_color(img.cell_sets[1], img.lab_pixel_map)
 
 
 plt.clf()
